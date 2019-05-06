@@ -1,0 +1,37 @@
+server:
+  port: 8003
+  
+mybatis:
+  config-location: classpath:mybatis/mybatis.cfg.xml #mybatis配置文件所在路径
+  type-aliases-package: com.zrh.springcloud.entities #entity别名累所在包
+  mapper-locations: classpath:mybatis/mapper/**/*.xml #mapper映射文件
+  
+spring:
+ application:
+   name: microservicecloud-dept
+ datasource:
+   driver-class-name: org.gjt.mm.mysql.Driver
+   username: root
+   password: 123456
+   url: jdbc:mysql://192.168.1.102/cloudDB03?characterEncoding=utf-8&useSSL=false
+   type: com.alibaba.druid.pool.DruidDataSource
+   dbcp2: 
+     min-idle: 5            #数据库连接池的最小维持数
+     initial-size: 5        #初始化连接数
+     max-total: 5           #最大连接数
+     max-wait-millis: 200   #等待连接获取的最大超时时间
+     
+     
+eureka:
+  client: #客户端注册近eureka服务列表
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/  
+  instance: 
+    instance-id: microservicecloud-dept8003 #注册中心不使用默认名字 自定义服务器名称
+    prefer-ip-address: true #访问路径可以显示ip地址
+  
+info:
+  app.name: zrh-microservicecloud
+  company.name: ffcs
+  build.artifactId: $project.artifactId$
+  build.version: $project.version$

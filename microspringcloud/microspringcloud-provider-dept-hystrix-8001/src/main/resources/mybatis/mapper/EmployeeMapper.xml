@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Configuration 3.0//EN" "mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.zrh.springcloud.dao.EmployeeDao">
+	<sql id="employee">
+		emp_id,emp_name,a.deptno,a.db_source,b.dname
+	</sql>
+	<select id="findById" resultMap="EmployeeMap" parameterType="Long">
+		select  
+		<include refid="employee"/>
+		from employee a ,dept b where a.deptno=b.deptno and emp_id=#{emp_id};
+	</select>
+	<select id="findAll" resultMap="EmployeeMap">
+		select <include refid="employee"/> from employee a ,dept b where a.deptno=b.deptno;
+	</select>
+	<insert id="addDept" parameterType="Employee">
+		INSERT INTO `employee` (`emp_name`, `deptno`,`db_source`) VALUES(#{emp_name}, #{deptno} , DATABASE()),
+	</insert>
+	
+	<resultMap type="com.zrh.springcloud.entities.Employee" id="EmployeeMap">
+		<id property="empId" column="emp_id"/>
+		<result property="empName" column="emp_name"/>
+		<result property="db_source" column="db_source"/>
+		<result property="deptno" column="deptno"/>
+		<association property="dept" javaType="com.zrh.springcloud.entities.Dept">
+			<id property="deptno" column="deptno"/>
+			<result property="db_source" column="db_source"/>
+			<result property="dname" column="dname"/>
+		</association>
+	</resultMap>
+</mapper>
